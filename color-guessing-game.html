@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Color Guessing Game</title>
+        <!---
+        <link rel="stylesheet" href="css/color-guessing-game.css" />
+        --->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway" />
+        <style>
+            @font-face {
+                font-family: "Raleway";
+            }
+
+            h1 {
+                font-family: "Raleway", san-serif;
+                text-align: center;
+                font-size: 4em;
+                font-weight: bolder;
+                margin-top: 2em;
+            }
+
+            button {
+                font-family: "Raleway";
+                font-size: 3em;
+                mix-blend-mode: multiply;
+                width: 40%;
+                color: white;
+                text-align: center;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 2em;
+                padding-top: .2em;
+                padding-bottom: .2em;
+                border: 1px solid black;
+                border-radius: 1em;
+                background-color: black;
+                background-image: linear-gradient(white, black, black, rgb(85, 85, 85));
+                box-shadow: 30px 30px 20px darkgray;
+                filter: contrast(.75);
+                cursor: pointer;
+            }
+
+            .button:hover {
+                filter: none;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Color Guessing Game</h1>
+        <button class="button" type="button" onclick="runGame()">Start Game</button>
+        <!---
+        <script src="js/color-guessing-game.js"></script>
+        --->
+        <script>
+            let correct = false;
+
+            const COLORS_ARRAY = ['blue', 'cyan', 'indigo', 'silver', 'green', 'magenta', 'orange', 'red', 'teal', 'gold'];
+
+            function runGame() {
+                let guess = '';
+                let tryCount = 0;
+
+                const SORTED_COLORS = COLORS_ARRAY.sort();
+                const targetIndex = Math.floor(Math.random()*COLORS_ARRAY.length);
+                const target = COLORS_ARRAY[targetIndex];
+
+                // console.log(target);
+
+                do {
+                    tryCount++;
+
+                    guess = prompt('I am thinking of one of these colors:\n\n' + SORTED_COLORS.join(', ') + '\n\nWhat color am I thinking of?\n\nThis is try number ' + tryCount + '.\n');
+                    guess = guess.toLowerCase();
+
+                    if (guess === null) {
+                    return;
+                }
+
+                correct = checkGuess(guess, target);
+        
+                } while(!correct);
+
+                document.body.style.background = guess;
+
+                if (tryCount === 1) {
+                    alert('You got it! The color was ' + target + '.\n\nIt took you ' + tryCount + ' try to guess correctly.');
+                } else {
+                    alert('You got it! The color was ' + target + '.\n\nIt took you ' + tryCount + ' tries to guess correctly.');
+                }    
+            }
+
+            function checkGuess(guess, target) {
+                let correct = false;
+
+                if(!COLORS_ARRAY.includes(guess)) {
+                    alert('Sorry, I don\'t recognize your color');
+                    return false;      
+                } else if(guess > target) {
+                    alert('Hint: Your color is alphabetically higher than mine.');
+                    return false;
+                } else if(guess < target) {
+                    alert('Hint: Your color is alphabetically lower than mine.');
+                    return false;
+                } else {
+                    return true;
+                }
+
+            }
+        </script>
+    </body>
+</html>
